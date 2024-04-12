@@ -1,0 +1,49 @@
+# swagger.yml
+
+openapi: 3.0.0
+info:
+  title: "Whatever REST API"
+  description: "An API to answer whatever questions you ask"
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Question:
+      type: "object"
+      required:
+        - question
+      properties:
+        question:
+          type: "string"
+    Reply:
+      type: "object"
+      required:
+        - reply
+      properties:
+        reply:
+          type: "string"
+paths:
+  /answer:
+    post:
+      operationId: "answer.answer"
+      tags:
+        - Answer
+      summary: "Answer a question"
+      requestBody:
+          description: "Question"
+          required: True
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+          x-body-name: "question"
+      responses:
+        "200":
+          description: "Successfully answer user question"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reply"
