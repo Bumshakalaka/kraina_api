@@ -12,5 +12,5 @@ Flask API with openapi 3.0.0 to:
 # Run
 1. `source .venv/bin/activate`
 2. `python3 app.py`
-3. Go to http://localhost:8000/ap/ui to see API documentation
+3. Go to http://localhost:8000/api/ui/ to see API documentation
 `pytnon3 app.py --help` to see command line parameters
