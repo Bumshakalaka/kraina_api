@@ -1,12 +1,15 @@
 # answer.py
+import logging
 
-from flask import abort, make_response
+from flask import abort
 
 from llm.answer import answer_consist
 from llm.moderate import Moderate
 
+logger = logging.getLogger(__name__)
 
-async def answer(question):
+
+def answer(question):
     to_answer = question.get("question")
     if Moderate().moderations(to_answer):
         abort(406, "You ask bad question, I will not answer that.")

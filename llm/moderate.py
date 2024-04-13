@@ -1,9 +1,12 @@
+import logging
 import os
 
 import requests
 
 from dotenv import load_dotenv, find_dotenv
 from requests.auth import AuthBase
+
+logger = logging.getLogger(__name__)
 
 
 class TokenAuth(AuthBase):
@@ -27,7 +30,9 @@ class Moderate:
         response = requests.post(
             url, json=dict(input=input), auth=TokenAuth(os.environ["OPENAI_API_KEY"])
         )
-        return response.json()["results"][0]["flagged"]
+        flagged = response.json()["results"][0]["flagged"]
+        logger.info(f"Q: {input}, flagged: {flagged}")
+        return flagged
 
 
 if __name__ == "__main__":

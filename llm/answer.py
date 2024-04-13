@@ -1,9 +1,11 @@
-import asyncio
+import logging
 from datetime import datetime
 
 from dotenv import find_dotenv, load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+
+logger = logging.getLogger(__name__)
 
 load_dotenv(find_dotenv())
 LLM = ChatOpenAI(model="gpt-3.5-turbo", temperature=1.0)
@@ -30,4 +32,5 @@ def answer_consist(question: str) -> str:
     )
     chain = prompt | LLM
     ret = chain.invoke(dict(date=get_timestamp(), question=question))
+    logger.info(f"Q: {question}, answer: {ret}")
     return ret.content
