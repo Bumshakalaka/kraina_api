@@ -47,3 +47,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Reply"
+  /chat:
+    post:
+      operationId: "answer.chat"
+      tags:
+        - Answer
+      summary: "Chat with LLM"
+      requestBody:
+          description: "Question"
+          required: True
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+          x-body-name: "question"
+      responses:
+        "200":
+          description: "Successfully answer user question"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reply"
+  /newchat:
+    get:
+      operationId: "answer.new_chat"
+      tags:
+        - Answer
+      summary: "Start new chat"
+      responses:
+        "200":
+          description: "Successfully create new chat"
