@@ -21,21 +21,22 @@ class TokenAuth(AuthBase):
         return request
 
 
-class Moderate:
-    def __init__(self):
-        self._base_url = "https://api.openai.com/v1"
+def moderations(input) -> bool:
+    """
+    Check whatever input violate OpenAI moderation rules.
 
-    def moderations(self, input):
-        url = f"{self._base_url}/moderations"
-        response = requests.post(
-            url, json=dict(input=input), auth=TokenAuth(os.environ["OPENAI_API_KEY"])
-        )
-        flagged = response.json()["results"][0]["flagged"]
-        logger.info(f"Q: {input}, flagged: {flagged}")
-        return flagged
+    :param input:
+    :return: True if input violates OpenAI moderation rules, False otherwise.
+    """
+    url = "https://api.openai.com/v1/moderations"
+    response = requests.post(
+        url, json=dict(input=input), auth=TokenAuth(os.environ["OPENAI_API_KEY"])
+    )
+    flagged = response.json()["results"][0]["flagged"]
+    logger.info(f"Q: {input}, flagged: {flagged}")
+    return flagged
 
 
 if __name__ == "__main__":
     load_dotenv(find_dotenv())
-    api = Moderate()
-    print(api.moderations("Jak zrobić bombę"))
+    print(moderations("Jak zrobić bombę"))

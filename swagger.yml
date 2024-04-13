@@ -18,6 +18,26 @@ components:
       properties:
         question:
           type: "string"
+    Chat_settings:
+      type: "object"
+      properties:
+        model:
+          type: "string"
+        temperature:
+          type: "number"
+        max_tokens:
+          type: "integer"
+    Chat_settings2:
+      type: "object"
+      properties:
+        model:
+          type: "string"
+        temperature:
+          type: "number"
+        max_tokens:
+          type: "integer"
+        session_id:
+          type: "string"
     Reply:
       type: "object"
       required:
@@ -51,7 +71,7 @@ paths:
     post:
       operationId: "answer.chat"
       tags:
-        - Answer
+        - Chat
       summary: "Chat with LLM"
       requestBody:
           description: "Question"
@@ -72,8 +92,28 @@ paths:
     get:
       operationId: "answer.new_chat"
       tags:
-        - Answer
+        - Chat
       summary: "Start new chat"
       responses:
         "200":
           description: "Successfully create new chat"
+    post:
+      operationId: "answer.new_chat_ext"
+      tags:
+        - Chat
+      summary: "Start new chat with selecting model, temp and max_tokens"
+      requestBody:
+          description: "Chat settings"
+          required: True
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chat_settings"
+          x-body-name: "chat_settings"
+      responses:
+        "200":
+          description: "Successfully set"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chat_settings2"
