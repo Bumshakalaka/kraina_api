@@ -101,6 +101,7 @@ def answer_using_context(question: str, context: str) -> str:
                 "AI: https://www.onet.pl"
                 "User: Adres URL artykułu na portalu niebezpiecznik.pl o zastrzeganiu numeru PESEL"
                 "AI: https://niebezpiecznik.pl/post/zastrzeganie-numeru-pesel-juz-od-jutra-tlumaczymy-jak-to-bedzie-dzialac/"
+                "\nIMPORTANT: return only URL"
                 "###Current date: {date}",
             ),
             ("human", "{question}"),
