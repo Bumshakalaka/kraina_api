@@ -1,12 +1,45 @@
 # answer.py
 import logging
+import os
 
 from flask import abort
 
-from llm.answer import just_answer, chat as llm_chat, new_chat as llm_new_chat
+from llm.answer import just_answer, chat as llm_chat, new_chat as llm_new_chat, rephrase_web, answer_using_context
 from llm.moderate import moderations
+from serpapi import GoogleSearch
 
 logger = logging.getLogger(__name__)
+
+
+def search(question):
+    """
+    Search web and return URL.
+
+    :param question:
+    :return:
+    """
+    to_answer = question.get("question")
+    if moderations(to_answer):
+        abort(406, "You ask bad question, I will not answer that.")
+    q = rephrase_web(to_answer)
+
+    params = {
+        "engine": "google",
+        "q": q,
+        "api_key": os.environ["SERP_API_KEY"],
+    }
+    search = GoogleSearch(params)
+    results = search.get_dict()
+    organic_results = results["organic_results"]
+    context = []
+    for data in organic_results:
+        if data.get("missing", None) is None:
+            continue
+        context.append("title:" + data["title"] + ", url:" + data["link"] + ", description:" + data["snippet"])
+
+    logger.info(organic_results)
+    ret = answer_using_context(q, "\n".join(context))
+    return dict(reply=ret), 200
 
 
 def answer(question):

@@ -117,3 +117,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Chat_settings2"
+  /search:
+    post:
+      operationId: "answer.search"
+      tags:
+        - Search
+      summary: "Search web to get answer"
+      requestBody:
+          description: "Question"
+          required: True
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+          x-body-name: "question"
+      responses:
+        "200":
+          description: "Successfully answer user question"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reply"

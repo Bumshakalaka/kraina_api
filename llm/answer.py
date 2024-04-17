@@ -58,6 +58,56 @@ def just_answer(question: str) -> str:
     return ret.content
 
 
+def rephrase_web(question: str) -> str:
+    """
+    Rephrase a question using LLM toweb search query..
+
+    :param question:
+    :return: LLM answer string
+    """
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "your role is to rephrase user question for web search engine and nothing more. "
+                "Be short and precise to get excellent results. "
+                "###Current date: {date}",
+            ),
+            ("human", "{question}"),
+        ]
+    )
+    chain = prompt | ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7, max_tokens=300)
+    ret = chain.invoke(dict(date=get_timestamp(), question=question))
+    logger.info(f"Q: {question}, answer: {ret}")
+    return ret.content
+
+
+def answer_using_context(question: str, context: str) -> str:
+    """
+    Answer a question using LLM using provided context only.
+
+    :param question:
+    :param context: context to use
+    :return: LLM answer string
+    """
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "Answer ultra-consistent to user question only with provided context and nothing more. "
+                "I'm interested in url only, one url"
+                "Context```{context}"
+                "###Current date: {date}",
+            ),
+            ("human", "{question}"),
+        ]
+    )
+    chain = prompt | ChatOpenAI(model="gpt-3.5-turbo", temperature=1.0, max_tokens=300)
+    ret = chain.invoke(dict(date=get_timestamp(), question=question, context=context))
+    logger.info(f"Q: {question}, answer: {ret}")
+    return ret.content
+
+
 def new_chat(settings: Dict = None) -> Dict:
     """
     Create a new chat.
