@@ -94,9 +94,13 @@ def answer_using_context(question: str, context: str) -> str:
         [
             (
                 "system",
-                "Answer ultra-consistent to user question only with provided context and nothing more. "
-                "I'm interested in url only, one url"
+                "Return url on user query. Use only provided context and nothing more. "
                 "Context```{context}"
+                "Example:"
+                "User: URL for the Polish portal Onet."
+                "AI: https://www.onet.pl"
+                "User: Adres URL artykułu na portalu niebezpiecznik.pl o zastrzeganiu numeru PESEL"
+                "AI: https://niebezpiecznik.pl/post/zastrzeganie-numeru-pesel-juz-od-jutra-tlumaczymy-jak-to-bedzie-dzialac/"
                 "###Current date: {date}",
             ),
             ("human", "{question}"),
