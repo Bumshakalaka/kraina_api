@@ -35,7 +35,16 @@ def search(question):
     for data in organic_results:
         if data.get("missing", None) is None:
             continue
-        context.append("title:" + data["title"] + ", url:" + data["link"] + ", description:" + data["snippet"])
+        context.append(
+            "title:"
+            + data["title"]
+            + ", url:"
+            + data["link"]
+            + ", description:"
+            + data["snippet"]
+            + ", date:"
+            + data.get("date", "??")
+        )
 
     logger.info(organic_results)
     ret = answer_using_context(q, "\n".join(context))
