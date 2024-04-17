@@ -9,3 +9,5 @@ langchain-openai~=0.1.0
 openai~=1.14.2
 PyYAML~=6.0.1
 requests~=2.31.0
+serpapi~=0.1.5
+google-search-results
