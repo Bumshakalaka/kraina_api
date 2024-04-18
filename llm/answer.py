@@ -1,7 +1,7 @@
 import logging
 import uuid
 from datetime import datetime
-from typing import Dict
+from typing import Dict, List
 
 from dotenv import find_dotenv, load_dotenv
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -82,7 +82,7 @@ def rephrase_web(question: str) -> str:
     return ret.content
 
 
-def answer_using_context(question: str, context: str) -> str:
+def answer_using_context(question: str, context: List[Dict]) -> str:
     """
     Answer a question using LLM using provided context only.
 
@@ -94,14 +94,16 @@ def answer_using_context(question: str, context: str) -> str:
         [
             (
                 "system",
-                "Return url on user query. Use only provided context and nothing more. "
-                "Context```{context}"
-                "Example:"
+                "Return valid url as response on user query. "
+                "Use only provided context to select the best url and nothing more. "
+                "If you don't know, return 'I don't know'. "
+                "Context```{context}```"
+                "\nExamples:"
                 "User: URL for the Polish portal Onet."
                 "AI: https://www.onet.pl"
                 "User: Adres URL artykułu na portalu niebezpiecznik.pl o zastrzeganiu numeru PESEL"
                 "AI: https://niebezpiecznik.pl/post/zastrzeganie-numeru-pesel-juz-od-jutra-tlumaczymy-jak-to-bedzie-dzialac/"
-                "\nIMPORTANT: return only URL"
+                "\nIMPORTANT: return only URL and nothing more."
                 "###Current date: {date}",
             ),
             ("human", "{question}"),

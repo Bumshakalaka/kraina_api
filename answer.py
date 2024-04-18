@@ -36,18 +36,11 @@ def search(question):
         if data.get("missing", None) is None:
             continue
         context.append(
-            "title:"
-            + data["title"]
-            + ", url:"
-            + data["link"]
-            + ", description:"
-            + data["snippet"]
-            + ", date:"
-            + data.get("date", "??")
+            dict(title=data["title"], url=data["link"], description=data["snippet"], date=data.get("date", "Unknown"))
         )
 
     logger.info(organic_results)
-    ret = answer_using_context(q, "\n".join(context))
+    ret = answer_using_context(q, context)
     return dict(reply=ret), 200
 
 
